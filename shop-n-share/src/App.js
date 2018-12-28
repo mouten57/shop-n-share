@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Header } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import * as actions from './actions';
+import { Container } from 'semantic-ui-react';
 import ShoppingTable from './components/ShoppingListTable';
-import NewItemButton from './components/NewItemButton';
 import NewItemForm from './components/NewItemForm';
 import Modal from './components/ModalExample';
 import EditItemForm from './components/EditItemForm';
+import Header from './components/Header';
+import NameDisplay from './components/NameDisplay';
 
 const dummyData = {
   Headers: ['', 'Total', 'Quantity', 'Price', '', ''],
@@ -26,6 +29,10 @@ class App extends Component {
       editItem: false
     };
   }
+  componentDidMount() {
+    this.props.fetchUser();
+  }
+
   onSubmitNewItem = item => {
     console.log(item);
   };
@@ -47,10 +54,12 @@ class App extends Component {
   };
   render() {
     return (
-      <Container style={{ marginTop: '50px' }}>
-        <Header as="h2" block>
-          Shop-n-Share
-        </Header>
+      <Container style={{ marginTop: '10px' }}>
+        <NameDisplay />
+        <Header
+          onNewItemClick={this.onNewItemClick}
+          newItemName={this.state.buttonName}
+        />
         {this.state.newItem ? (
           <NewItemForm submitItem={this.onSubmitNewItem} />
         ) : null}
@@ -58,15 +67,14 @@ class App extends Component {
           <Modal open={this.state.editItem}>
             <EditItemForm
               cancelEdit={e =>
-                this.setState({ editItem: !this.state.editItem })
+                this.setState({
+                  editItem: !this.state.editItem
+                })
               }
             />
           </Modal>
         ) : null}
-        <NewItemButton
-          onButtonClick={this.onNewItemClick}
-          buttonName={this.state.buttonName}
-        />
+
         <ShoppingTable
           onButtonClick={this.onNewItemClick}
           buttonName={this.state.buttonName}
@@ -78,4 +86,7 @@ class App extends Component {
     );
   }
 }
-export default App;
+export default connect(
+  null,
+  actions
+)(App);

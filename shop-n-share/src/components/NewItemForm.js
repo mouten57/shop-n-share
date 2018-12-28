@@ -30,7 +30,7 @@ class NewItemForm extends Component {
     console.log(this.state);
   };
   click = e => {
-    console.log('SHIT');
+    console.log('click');
   };
 
   render() {

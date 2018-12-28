@@ -21,14 +21,14 @@ module.exports = app => {
     }
   );
 
-  app.get('/logout', (req, res) => {
+  app.get('/api/logout', (req, res) => {
     console.log(`hey, here is the user that just signed out: ${req.user}`);
     req.logout();
     res.redirect('/');
   });
 
   //route handler for user
-  app.get('/current_user', (req, res) => {
+  app.get('/api/current_user', (req, res) => {
     res.send(req.user);
   });
 };

@@ -6,8 +6,9 @@ const NewItemButton = props => (
     content={props.buttonName}
     floated="right"
     color="teal"
-    style={{ marginBottom: '5px', width: '110px' }}
     onClick={props.onButtonClick}
+    size="tiny"
+    style={{ marginRight: '5px', padding: '10px' }}
   />
 );
 

@@ -5,10 +5,7 @@ const ModalExample = props => (
   <Modal open={props.open}>
     <Modal.Header>Edit</Modal.Header>
     <Modal.Content>
-      <Modal.Description>
-        <div>Hello!</div>
-        {props.children}
-      </Modal.Description>
+      <Modal.Description>{props.children}</Modal.Description>
     </Modal.Content>
   </Modal>
 );
