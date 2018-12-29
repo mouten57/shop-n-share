@@ -6,4 +6,10 @@
 - Grab item data and fill `edit form` with that data
 - set up db
 - begin routing API endpoints
+
+---
+
+up to here
+
+- figure out live updates with mongoDB
 - decide on testing suite(s)
