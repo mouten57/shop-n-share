@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import FormFloater from './Floater';
+import FormErrors from './FormErrors';
 
 const options = [
+  { key: 'blank', text: '', value: '' },
   { key: 'ea', text: 'ea', value: 'ea' },
   { key: 'pcs', text: 'pcs', value: 'pcs' },
   { key: 'bag', text: 'bag', value: 'bag' },
@@ -29,20 +31,74 @@ class NewItemForm extends Component {
         unit: 'ea',
         price: '',
         notes: ''
-      }
+      },
+      formErrors: {},
+      productValid: false,
+      qtyValid: false,
+      unitValid: false,
+      priceValid: false,
+      formValid: false
     };
+  }
+  validateField(fieldName, value) {
+    let fieldValidationErrors = this.state.formErrors;
+    let { productValid, qtyValid, unitValid, priceValid } = this.state;
+
+    switch (fieldName) {
+      case 'product':
+        productValid = value.length >= 3;
+        fieldValidationErrors.product = productValid ? '' : ' is too short';
+        break;
+      case 'qty':
+        qtyValid = value.length >= 1;
+        fieldValidationErrors.qty = qtyValid ? '' : ' is too short';
+        break;
+
+      case 'unit':
+        unitValid = value.length >= 1;
+        fieldValidationErrors.unit = unitValid ? '' : ' is too short';
+        break;
+
+      case 'price':
+        priceValid = value.length >= 1;
+        fieldValidationErrors.price = priceValid ? '' : ' is too short';
+        break;
+      default:
+        break;
+    }
+    this.setState(
+      {
+        formErrors: fieldValidationErrors,
+        productValid,
+        qtyValid,
+        unitValid,
+        priceValid
+      },
+      this.validateForm
+    );
+  }
+
+  validateForm() {
+    let { productValid, qtyValid, unitValid, priceValid } = this.state;
+
+    this.setState({
+      formValid: productValid && qtyValid && priceValid && unitValid
+    });
   }
   handleSelectChange = e => {
     let formFields = { ...this.state.formFields };
     formFields['unit'] = e.target.value;
-    this.setState({ formFields });
+    this.setState({ formFields }, this.validateField('unit', e.target.value));
   };
   handleChange = e => {
     let formFields = { ...this.state.formFields };
     formFields[e.target.name] = e.target.value;
-    this.setState({
-      formFields
-    });
+    this.setState(
+      {
+        formFields
+      },
+      this.validateField(e.target.name, e.target.value)
+    );
   };
   onSubmit = item => {
     this.setState({ formFields: null });
@@ -115,6 +171,7 @@ class NewItemForm extends Component {
                 control={Button}
                 onClick={e => this.onSubmit(this.state.formFields)}
                 primary
+                disabled={!this.state.formValid}
               >
                 Add to List
               </Form.Field>
@@ -125,7 +182,12 @@ class NewItemForm extends Component {
   }
 
   render() {
-    return <div>{this.displayForm()}</div>;
+    return (
+      <div>
+        <FormErrors formErrors={this.state.formErrors} />
+        {this.displayForm()}
+      </div>
+    );
   }
 }
 
