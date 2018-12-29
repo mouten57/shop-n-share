@@ -4,7 +4,8 @@ module.exports = {
       const mockAuth = require('../../spec/support/mock-auth.js');
       mockAuth.fakeIt(app);
     }
-    require('../routes/auth')(app);
-    require('../routes/users')(app);
+    require('../routes/authRoutes')(app);
+    require('../routes/userRoutes')(app);
+    require('../routes/itemRoutes')(app);
   }
 };

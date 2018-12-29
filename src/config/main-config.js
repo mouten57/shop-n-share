@@ -1,6 +1,5 @@
 require('dotenv').config();
 const path = require('path');
-const viewsFolder = path.join(__dirname, '..', 'views');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const cookieSession = require('cookie-session');
@@ -11,6 +10,7 @@ const mongoose = require('mongoose');
 
 //important to call model first, before I try to run passport
 require('../db/models/User');
+require('../db/models/Item');
 
 const keys = require('./keys/keys');
 require('./passport-config');
@@ -18,8 +18,7 @@ require('./passport-config');
 module.exports = {
   init(app, express) {
     mongoose.connect(keys.mongoURI);
-    app.set('views', viewsFolder);
-    app.set('view engine', 'ejs');
+    app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(expressValidator());
     app.use(

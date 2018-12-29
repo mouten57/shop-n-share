@@ -22,31 +22,101 @@ const options = [
 class EditItemForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    const item = this.props.editData[0];
+    this.state = {
+      formFields: {
+        product: '',
+        qty: '',
+        unit: '',
+        price: '',
+        notes: ''
+      }
+    };
+  }
+  componentDidMount() {
+    let item = this.props.editData[0];
+    this.setState({
+      formFields: item
+    });
   }
 
-  handleChange = (e, { value }) => this.setState({ value });
+  handleChange = e => {
+    let formFields = { ...this.state.formFields };
+    formFields[e.target.name] = e.target.value;
+    this.setState({
+      formFields
+    });
+  };
+  handleSelectChange = e => {
+    let formFields = { ...this.state.formFields };
+    formFields['unit'] = e.target.value;
+    this.setState({ formFields });
+  };
+
+  onSubmit = item => {
+    this.setState({ formFields: null });
+    this.props.updateItem(item);
+  };
 
   render() {
+    const { product, qty, price, notes, unit } = this.state.formFields || false;
     return (
       <FormFloater>
         <Form>
           <Form.Group widths="equal">
-            <Form.Input fluid label="Product" />
-            <Form.Input fluid label="How Much" placeholder="1" />
-            <Form.Select
+            <Form.Input
               fluid
-              label="Unit"
-              options={options}
-              placeholder="Unit"
+              label="Product"
+              name="product"
+              value={product}
+              onChange={this.handleChange}
+            />
+            <Form.Input
+              fluid
+              label="How Much"
+              placeholder="1"
+              value={qty}
+              onChange={this.handleChange}
             />
           </Form.Group>
-          <Form.Group inline>
-            <Form.Input fluid label="Price (per item)" />
+          <Form.Group widths="equal">
+            <Form.Field>
+              <label>Unit</label>
+              <select
+                style={{ height: '38px' }}
+                value={this.state.unit}
+                onChange={this.handleSelectChange}
+              >
+                {options.map(unit => {
+                  return (
+                    <option key={unit.key} name={unit.text} value={unit.text}>
+                      {unit.text}
+                    </option>
+                  );
+                })}
+              </select>
+            </Form.Field>
+            <Form.Input
+              fluid
+              label="Price (per item)"
+              name="price"
+              value={price}
+              onChange={this.handleChange}
+            />
           </Form.Group>
-          <Form.TextArea label="Notes" placeholder="Something noteworthy.." />
+          <Form.TextArea
+            label="Notes"
+            name="notes"
+            placeholder="Something noteworthy.."
+            value={notes}
+            onChange={this.handleChange}
+          />
           <Form.Group>
-            <Form.Field control={Button} color="teal">
+            <Form.Field
+              control={Button}
+              color="teal"
+              onClick={e => this.onSubmit(this.state.formFields)}
+            >
               Save
             </Form.Field>
             <Form.Field control={Button} color="teal">
