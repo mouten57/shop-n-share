@@ -25,9 +25,9 @@ class App extends Component {
     };
   }
   async componentDidMount() {
-    this.props.fetchUser();
+    await this.props.fetchUser();
     const res = await axios.get(`/api/items`);
-    this.setState({ itemdata: res.data });
+    await this.setState({ itemdata: res.data });
   }
 
   onSubmitNewItem = async formFields => {
@@ -36,13 +36,15 @@ class App extends Component {
     let joined = [...this.state.itemdata, res.data];
     this.setState({ itemdata: joined });
   };
-  updateItem = async formFields => {
-    await axios.post(`/api/items/${formFields._id}/update`, formFields);
-    this.setState({ editItem: false });
-    let newItem = formFields;
-    const data = this.state.itemdata.filter(i => i._id !== newItem._id);
-    let joined = [...data, newItem];
-    this.setState({ itemdata: joined });
+  updateItem = async newItem => {
+    await axios.post(`/api/items/${newItem._id}/update`, newItem);
+
+    let itemdata = [...this.state.itemdata];
+    const index = this.state.itemdata.findIndex(
+      item => item._id === newItem._id
+    );
+    itemdata[index] = newItem;
+    this.setState({ editItem: false, itemdata });
   };
 
   onNewItemClick = e => {

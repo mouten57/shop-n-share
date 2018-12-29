@@ -22,7 +22,6 @@ const options = [
 class EditItemForm extends Component {
   constructor(props) {
     super(props);
-    const item = this.props.editData[0];
     this.state = {
       formFields: {
         product: '',
@@ -54,12 +53,11 @@ class EditItemForm extends Component {
   };
 
   onSubmit = item => {
-    this.setState({ formFields: null });
     this.props.updateItem(item);
   };
 
   render() {
-    const { product, qty, price, notes, unit } = this.state.formFields || false;
+    const { product, qty, price, notes } = this.state.formFields || false;
     return (
       <FormFloater>
         <Form>
@@ -74,6 +72,7 @@ class EditItemForm extends Component {
             <Form.Input
               fluid
               label="How Much"
+              name="qty"
               placeholder="1"
               value={qty}
               onChange={this.handleChange}
@@ -85,6 +84,7 @@ class EditItemForm extends Component {
               <select
                 style={{ height: '38px' }}
                 value={this.state.unit}
+                name="unit"
                 onChange={this.handleSelectChange}
               >
                 {options.map(unit => {
