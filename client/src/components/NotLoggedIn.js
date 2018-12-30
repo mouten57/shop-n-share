@@ -7,7 +7,7 @@ const Landing = () => {
       <Message
         icon="thumbs down"
         header="Error: You need to login!"
-        content="Upload your own resources, comment, and vote."
+        content="Login so you can see the family shopping list!"
       />
 
       <a href="/auth/google" style={{ color: 'white' }}>
