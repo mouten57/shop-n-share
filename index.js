@@ -28,4 +28,4 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-app.listen(PORT);
+server.listen(PORT);
