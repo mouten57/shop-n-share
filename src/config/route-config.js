@@ -5,7 +5,7 @@ module.exports = {
       mockAuth.fakeIt(app);
     }
     require('../routes/authRoutes')(app);
-    require('../routes/userRoutes')(app);
+
     require('../routes/itemRoutes')(app);
   }
 };
