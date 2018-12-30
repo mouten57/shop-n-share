@@ -4,8 +4,12 @@ const convertTimeStamp = require('../helpers/convertTimeStamp');
 
 module.exports = {
   async getAllItems(callback) {
-    const items = await Item.find({});
-    callback(null, items);
+    try {
+      const items = await Item.find({});
+      callback(null, items);
+    } catch (err) {
+      res.status(422).send(err);
+    }
   },
   async getItem(id, callback) {
     const item = await Item.find({ _id: id });
