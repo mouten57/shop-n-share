@@ -4,9 +4,13 @@ const convertTimeStamp = require('../helpers/convertTimeStamp');
 
 module.exports = {
   async getAllItems(callback) {
+    let result = {};
     try {
-      const items = await Item.find({});
-      callback(null, items);
+      const unpurchasedItems = await Item.find({ purchased: false });
+      result.unpurchased = unpurchasedItems;
+      const purchasedItems = await Item.find({ purchased: true });
+      result.purchased = purchasedItems;
+      callback(null, result);
     } catch (err) {
       res.status(422).send(err);
     }
@@ -19,8 +23,9 @@ module.exports = {
       callback(err);
     }
   },
+
   async createItem(newItem, callback) {
-    const { product, qty, unit, price, notes, _user } = newItem;
+    const { product, qty, unit, price, notes, _user, purchased } = newItem;
     const item = new Item({
       product,
       qty,
@@ -28,6 +33,7 @@ module.exports = {
       price,
       notes,
       _user,
+      purchased,
       dateAdded: convertTimeStamp(Date.now())
     });
     try {
@@ -39,12 +45,23 @@ module.exports = {
   },
   async updateItem(req, updatedItem, callback) {
     const item = await Item.findOne({ _id: req.params.id });
-    const { product, qty, unit, price, notes } = updatedItem;
+    const { product, qty, unit, price, notes, purchased } = updatedItem;
     (item.product = product),
       (item.qty = qty),
       (item.unit = unit),
       (item.price = price),
-      (item.notes = notes);
+      (item.notes = notes),
+      (item.purchased = purchased);
+    try {
+      item.save();
+      callback(null, item);
+    } catch (err) {
+      callback(err);
+    }
+  },
+  async purchase(_id, callback) {
+    const item = await Item.findOne({ _id });
+    item.purchased = !item.purchased;
     try {
       item.save();
       callback(null, item);

@@ -57,7 +57,8 @@ class EditItemForm extends Component {
   };
 
   render() {
-    const { _id, product, qty, price, notes } = this.state.formFields || false;
+    const { _id, _user, product, qty, price, notes } =
+      this.state.formFields || false;
     return (
       <FormFloater>
         <Form>
@@ -111,10 +112,14 @@ class EditItemForm extends Component {
             value={notes}
             onChange={this.handleChange}
           />
-          <Form.Group>
+          <h5 style={{ textAlign: 'center', marginTop: '0px' }}>
+            Added to cart by: {_user !== undefined ? _user.name : null}
+          </h5>
+          <Form.Group inline widths="equal">
             <Form.Field
               control={Button}
               color="teal"
+              fluid
               onClick={e => this.onSubmit(this.state.formFields)}
             >
               Save
@@ -122,6 +127,7 @@ class EditItemForm extends Component {
             <Form.Field
               control={Button}
               color="teal"
+              fluid
               onClick={e => this.props.deleteItem(_id)}
             >
               Delete
@@ -129,6 +135,7 @@ class EditItemForm extends Component {
             <Form.Field
               control={Button}
               color="teal"
+              fluid
               onClick={this.props.cancelEdit}
             >
               Cancel

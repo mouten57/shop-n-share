@@ -16,12 +16,14 @@ class Nav extends Component {
           <Menu.Item fitted>
             <SignInButton auth={this.props.auth} />
           </Menu.Item>
-          <Menu.Item fitted>
-            <NewItemButton
-              buttonName={this.props.newItemName}
-              onButtonClick={this.props.onNewItemClick}
-            />
-          </Menu.Item>
+          {this.props.auth ? (
+            <Menu.Item fitted>
+              <NewItemButton
+                buttonName={this.props.newItemName}
+                onButtonClick={this.props.onNewItemClick}
+              />
+            </Menu.Item>
+          ) : null}
         </Menu.Menu>
       </Menu>
     );

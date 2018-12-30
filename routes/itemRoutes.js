@@ -7,4 +7,5 @@ module.exports = app => {
   app.post('/api/items/:id/destroy', itemController.destroy);
   app.get('/api/items/:id/edit', itemController.edit);
   app.post('/api/items/:id/update', itemController.update);
+  app.post('/api/items/:id/purchase', itemController.purchase);
 };

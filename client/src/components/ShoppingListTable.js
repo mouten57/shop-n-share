@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Table, Checkbox, Button } from 'semantic-ui-react';
+import NotLoggedIn from './NotLoggedIn';
 
 class TableExample extends Component {
   renderTable() {
@@ -25,7 +27,10 @@ class TableExample extends Component {
                 return (
                   <Table.Row key={index}>
                     <Table.Cell width={1}>
-                      <Checkbox />
+                      <Checkbox
+                        onChange={e => this.props.markPurchased(item._id)}
+                        checked={false}
+                      />
                     </Table.Cell>
                     <Table.Cell>{item.product}</Table.Cell>
                     <Table.Cell>{item.qty}</Table.Cell>
@@ -58,8 +63,12 @@ class TableExample extends Component {
     }
   }
   render() {
-    return <div>{this.renderTable()}</div>;
+    return <div>{this.props.auth ? this.renderTable() : <NotLoggedIn />}</div>;
   }
 }
 
-export default TableExample;
+function mapStateToProps({ auth }) {
+  return { auth };
+}
+
+export default connect(mapStateToProps)(TableExample);

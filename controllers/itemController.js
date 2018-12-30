@@ -14,9 +14,16 @@ module.exports = {
       unit: req.body.unit,
       price: req.body.price,
       notes: req.body.notes,
-      _user: req.user.id
+      _user: req.user,
+      purchased: false
     };
     itemQueries.createItem(newItem, (err, item) => {
+      if (err) throw err;
+      res.send(item);
+    });
+  },
+  purchase(req, res, next) {
+    itemQueries.purchase(req.params.id, (err, item) => {
       if (err) throw err;
       res.send(item);
     });

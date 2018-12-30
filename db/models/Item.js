@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const userSchema = require('./User');
 
 const itemSchema = new Schema({
   product: String,
@@ -8,7 +9,8 @@ const itemSchema = new Schema({
   price: String,
   notes: String,
   dateAdded: String,
-  _user: { type: Schema.Types.ObjectId, ref: 'User' }
+  _user: userSchema,
+  purchased: Boolean
 });
 
 mongoose.model('items', itemSchema);

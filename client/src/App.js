@@ -10,6 +10,7 @@ import Header from './components/Header';
 import NameDisplay from './components/NameDisplay';
 import { subscribeToTimer } from './components/socket';
 import axios from 'axios';
+import PurchasedItems from './components/PurchasedItems';
 
 const headerData = ['', 'Total', 'Quantity', 'Price', '', ''];
 
@@ -21,16 +22,25 @@ class App extends Component {
       newItem: false,
       headerData,
       itemdata: null,
+      purchasedItems: null,
       editItem: false,
       editData: null
     };
-    subscribeToTimer((err, itemdata) => this.setState({ itemdata }));
+    subscribeToTimer((err, itemdata) => {
+      this.setState({
+        itemdata: itemdata.unpurchased,
+        purchasedItems: itemdata.purchased
+      });
+    });
   }
   async componentDidMount() {
     await this.props.fetchUser();
 
     const res = await axios.get(`/api/items`);
-    await this.setState({ itemdata: res.data });
+    await this.setState({
+      itemdata: res.data.unpurchased,
+      purchasedItems: res.data.purchased
+    });
   }
 
   onSubmitNewItem = async formFields => {
@@ -63,6 +73,9 @@ class App extends Component {
     const data = this.state.itemdata.filter(i => i._id !== id);
     this.setState({ itemdata: data, editItem: false });
   };
+  markPurchased = async id => {
+    await axios.post(`/api/items/${id}/purchase`);
+  };
 
   render() {
     return (
@@ -79,7 +92,7 @@ class App extends Component {
         />
 
         {this.state.editItem ? (
-          <Modal open={this.state.editItem}>
+          <Modal open={this.state.editItem} header="Edit">
             <EditItemForm
               editData={this.state.editData}
               editItem={this.state.editItem}
@@ -94,14 +107,21 @@ class App extends Component {
           </Modal>
         ) : null}
 
-        <ShoppingTable
-          onButtonClick={this.onNewItemClick}
-          buttonName={this.state.buttonName}
-          headerdata={this.state.headerData}
-          itemdata={this.state.itemdata}
-          editHandler={this.editItemHandler}
-          deleteHandler={this.deleteItemHandler}
-        />
+        <div>
+          <ShoppingTable
+            onButtonClick={this.onNewItemClick}
+            buttonName={this.state.buttonName}
+            headerdata={this.state.headerData}
+            itemdata={this.state.itemdata}
+            editHandler={this.editItemHandler}
+            deleteHandler={this.deleteItemHandler}
+            markPurchased={this.markPurchased}
+          />
+          <PurchasedItems
+            purchasedItems={this.state.purchasedItems}
+            markPurchased={this.markPurchased}
+          />
+        </div>
       </Container>
     );
   }

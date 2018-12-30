@@ -3,7 +3,7 @@ import { Modal } from 'semantic-ui-react';
 
 const ModalExample = props => (
   <Modal open={props.open}>
-    <Modal.Header>Edit</Modal.Header>
+    <Modal.Header>{props.header}</Modal.Header>
     <Modal.Content>
       <Modal.Description>{props.children}</Modal.Description>
     </Modal.Content>
