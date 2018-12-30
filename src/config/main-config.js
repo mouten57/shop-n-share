@@ -16,8 +16,17 @@ const keys = require('./keys/keys');
 require('./passport-config');
 
 module.exports = {
-  init(app, express) {
+  init(app, express, io, axios) {
     mongoose.connect(keys.mongoURI);
+    io.on('connection', client => {
+      client.on('subscribeToItems', interval => {
+        console.log('client is subscribing to timer with interval ', interval);
+        setInterval(async () => {
+          let res = await axios.get(keys.ioGetPath);
+          client.emit('items', res.data);
+        }, interval);
+      });
+    });
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(expressValidator());

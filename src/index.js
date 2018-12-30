@@ -1,16 +1,15 @@
 const express = require('express');
+const app = express();
+const server = require('http').createServer(app);
 const mainConfig = require('./config/main-config');
 const routeConfig = require('./config/route-config.js');
-const http = require('http');
 const axios = require('axios');
-const socketIo = require('socket.io');
 const PORT = process.env.PORT || 5000;
-const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
+
+const io = require('socket.io')(server);
 
 //main setup
-mainConfig.init(app, express);
+mainConfig.init(app, express, io, axios);
 
 //route setup
 routeConfig.init(app);
@@ -25,18 +24,8 @@ if (process.env.NODE_ENV === 'production') {
   //recognize the route
   const path = require('path');
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
   });
 }
-
-io.on('connection', client => {
-  client.on('subscribeToItems', interval => {
-    console.log('client is subscribing to timer with interval ', interval);
-    setInterval(async () => {
-      let res = await axios.get('http://localhost:5000/api/items');
-      client.emit('items', res.data);
-    }, interval);
-  });
-});
 
 server.listen(PORT);

@@ -101,7 +101,6 @@ class NewItemForm extends Component {
     );
   };
   onSubmit = item => {
-    this.setState({ formFields: null });
     this.props.submitItem(item);
   };
   displayForm() {

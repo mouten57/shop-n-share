@@ -5,5 +5,6 @@ module.exports = {
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   mongoURI: process.env.MONGO_URI,
   cookieKey: process.env.COOKIE_KEY,
-  redirectDomain: process.env.REDIRECT_DOMAIN
+  redirectDomain: process.env.REDIRECT_DOMAIN,
+  ioGetPath: process.env.IO_GET_PATH
 };
