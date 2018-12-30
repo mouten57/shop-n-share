@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
-const mainConfig = require('./src/config/main-config');
-const routeConfig = require('./src/config/route-config.js');
+const mainConfig = require('./config/main-config');
+const routeConfig = require('./config/route-config.js');
 const axios = require('axios');
 const PORT = process.env.PORT || 5000;
 
