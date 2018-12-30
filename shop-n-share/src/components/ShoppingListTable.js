@@ -46,7 +46,7 @@ class TableExample extends Component {
                         icon="delete"
                         floated="left"
                         value={index}
-                        onClick={e => this.props.deleteHandler(index, item._id)}
+                        onClick={e => this.props.deleteHandler(item._id)}
                       />
                     </Table.Cell>
                   </Table.Row>

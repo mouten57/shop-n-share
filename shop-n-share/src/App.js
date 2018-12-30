@@ -8,6 +8,7 @@ import Modal from './components/ModalExample';
 import EditItemForm from './components/EditItemForm';
 import Header from './components/Header';
 import NameDisplay from './components/NameDisplay';
+import { subscribeToTimer } from './components/socket';
 import axios from 'axios';
 
 const headerData = ['', 'Total', 'Quantity', 'Price', '', ''];
@@ -23,18 +24,20 @@ class App extends Component {
       editItem: false,
       editData: null
     };
+    subscribeToTimer((err, itemdata) => this.setState({ itemdata }));
   }
   async componentDidMount() {
     await this.props.fetchUser();
+
     const res = await axios.get(`/api/items`);
     await this.setState({ itemdata: res.data });
   }
 
   onSubmitNewItem = async formFields => {
     const res = await axios.post('/api/items/create', formFields);
-    this.setState({ newItem: false });
+
     let joined = [...this.state.itemdata, res.data];
-    this.setState({ itemdata: joined });
+    this.setState({ itemdata: joined, newItem: false, buttonName: 'New Item' });
   };
   updateItem = async newItem => {
     await axios.post(`/api/items/${newItem._id}/update`, newItem);
@@ -55,10 +58,10 @@ class App extends Component {
     const res = await axios.get(`/api/items/${id}/edit`);
     this.setState({ editItem: !this.state.editItem, editData: res.data });
   };
-  deleteItemHandler = (index, id) => {
+  deleteItemHandler = id => {
     axios.post(`/api/items/${id}/destroy`);
     const data = this.state.itemdata.filter(i => i._id !== id);
-    this.setState({ itemdata: data });
+    this.setState({ itemdata: data, editItem: false });
   };
 
   render() {
@@ -81,6 +84,7 @@ class App extends Component {
               editData={this.state.editData}
               editItem={this.state.editItem}
               updateItem={this.updateItem}
+              deleteItem={this.deleteItemHandler}
               cancelEdit={e =>
                 this.setState({
                   editItem: !this.state.editItem

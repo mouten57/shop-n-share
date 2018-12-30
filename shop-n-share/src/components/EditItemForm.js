@@ -57,7 +57,7 @@ class EditItemForm extends Component {
   };
 
   render() {
-    const { product, qty, price, notes } = this.state.formFields || false;
+    const { _id, product, qty, price, notes } = this.state.formFields || false;
     return (
       <FormFloater>
         <Form>
@@ -119,7 +119,11 @@ class EditItemForm extends Component {
             >
               Save
             </Form.Field>
-            <Form.Field control={Button} color="teal">
+            <Form.Field
+              control={Button}
+              color="teal"
+              onClick={e => this.props.deleteItem(_id)}
+            >
               Delete
             </Form.Field>
             <Form.Field
