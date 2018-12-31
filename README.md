@@ -6,10 +6,11 @@
 - Grab item data and fill `edit form` with that data
 - set up db
 - begin routing API endpoints
-
----
-
-up to here
-
 - figure out live updates with mongoDB
-- decide on testing suite(s)
+
+What's Left:
+
+- full test suites
+- update README
+- make sure code is clear and concise.. any unnecessary or repeated methods?
+- any time for bonus options?
