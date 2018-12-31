@@ -10,7 +10,7 @@
 
 What's Left:
 
-- full test suites
+- full test suite √
 - update README
 - make sure code is clear and concise.. any unnecessary or repeated methods?
 - any time for bonus options?
