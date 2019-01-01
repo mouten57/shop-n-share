@@ -46,4 +46,8 @@ So, there were a few challenges on this project!
 
    - If I had more time, I would make this thing perfect! But perfect really is a subject and somewhat attainable goal, isn't it?
 
-   Here's what I would do with more time: 1. At least one of the bonus options. I really like the idea of different groups and being able to invite people or 'share' your list with only certain users. Even just the authentication to have only certain people being able to access the list would be cool. 2. I saw some other shopping list apps in my research and one idea that stuck out to me was this little side menu that had various options like 'Share List', 'Check All', 'Uncheck All', 'Remove Completed', 'Print List', and 'Delete List'. So, a little side menu would be cool. 3. Lastly, I think it would be cool to have a little side chat since everything is live-updating already. Like a place where you can type and say 'hey, I just found these sweet sneakers on sale at Adidas' or somewhere to paste a coupon.
+   Here's what I would do with more time:
+
+   1. At least one of the bonus options. I really like the idea of different groups and being able to invite people or 'share' your list with only certain users. Even just the authentication to have only certain people being able to access the list would be cool.
+   2. I saw some other shopping list apps in my research and one idea that stuck out to me was this little side menu that had various options like 'Share List', 'Check All', 'Uncheck All', 'Remove Completed', 'Print List', and 'Delete List'. So, a little side menu would be cool.
+   3. Lastly, I think it would be cool to have a little side chat since everything is live-updating already. Like a place where you can type and say 'hey, I just found these sweet sneakers on sale at Adidas' or somewhere to paste a coupon.
