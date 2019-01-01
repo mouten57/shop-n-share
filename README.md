@@ -1,9 +1,30 @@
 #### Shopping List project started at 2pm on Dec 27
 
+[live shopping list](https://shop-n-share.herokuapp.com/)
+
+## To run locally:
+
+- config/keys/keys.js is on gitignore to preserve all of my keys, so you'll need to create one. It looks like this:
+
+```
+module.exports = {
+ googleClientID:
+   'YOUR_GOOGLE_CLIENT_ID',
+ googleClientSecret: 'YOUR_GOOGLE_CLIENT_SECRET',
+ mongoURI:
+   'YOUR_MONGO_URI',
+ cookieKey: 'ANY RANDOM STRING OF NUMBERS',
+ redirectDomain: 'http://localhost:3000',
+ ioGetPath: 'http://localhost:5000/api/items'
+};
+```
+
+So, you'll need to create some google oauth20 creds and a mongoDB on mLab. Or just send me a message, I'll hook you up with the dev.js file!
+
 ## What's Left:
 
 - [x] full test suite
-- [x]update README
+- [x] update README
 - [x] A description of the problem and solution.
 - [x] The reasoning behind your technical choices.
 - [x] Trade-offs you might have made, anything you left out, or what you might do differently if you were to spend additional time on the project.
