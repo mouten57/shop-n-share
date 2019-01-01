@@ -4,9 +4,10 @@
 
 ## To run locally:
 
-- config/keys/keys.js is on gitignore to preserve all of my keys, so you'll need to create one. It looks like this:
+- config/keys/dev.js is on gitignore to preserve all of my keys, so you'll need to create one. It looks like this:
 
 ```
+// config/keys/dev.js
 module.exports = {
  googleClientID:
    'YOUR_GOOGLE_CLIENT_ID',

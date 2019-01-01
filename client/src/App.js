@@ -21,7 +21,7 @@ class App extends Component {
       buttonName: 'New Item',
       newItem: false,
       headerData,
-      itemdata: null,
+      unpurchasedItems: null,
       purchasedItems: null,
       editItem: false,
       editData: null
@@ -35,10 +35,9 @@ class App extends Component {
   }
   async componentDidMount() {
     await this.props.fetchUser();
-
     const res = await axios.get(`/api/items`);
     await this.setState({
-      itemdata: res.data.unpurchased,
+      unpurchasedItems: res.data.unpurchased,
       purchasedItems: res.data.purchased
     });
   }
@@ -46,18 +45,22 @@ class App extends Component {
   onSubmitNewItem = async formFields => {
     const res = await axios.post('/api/items/create', formFields);
 
-    let joined = [...this.state.itemdata, res.data];
-    this.setState({ itemdata: joined, newItem: false, buttonName: 'New Item' });
+    let joined = [...this.state.unpurchasedItems, res.data];
+    this.setState({
+      unpurchasedItems: joined,
+      newItem: false,
+      buttonName: 'New Item'
+    });
   };
   updateItem = async newItem => {
     await axios.post(`/api/items/${newItem._id}/update`, newItem);
 
-    let itemdata = [...this.state.itemdata];
-    const index = this.state.itemdata.findIndex(
+    let unpurchasedItems = [...this.state.unpurchasedItems];
+    const index = this.state.unpurchasedItems.findIndex(
       item => item._id === newItem._id
     );
-    itemdata[index] = newItem;
-    this.setState({ editItem: false, itemdata });
+    unpurchasedItems[index] = newItem;
+    this.setState({ editItem: false, unpurchasedItems });
   };
 
   onNewItemClick = e => {
@@ -70,8 +73,8 @@ class App extends Component {
   };
   deleteItemHandler = id => {
     axios.post(`/api/items/${id}/destroy`);
-    const data = this.state.itemdata.filter(i => i._id !== id);
-    this.setState({ itemdata: data, editItem: false });
+    const data = this.state.unpurchasedItems.filter(i => i._id !== id);
+    this.setState({ unpurchasedItems: data, editItem: false });
   };
   markPurchased = async id => {
     await axios.post(`/api/items/${id}/purchase`);
@@ -112,7 +115,7 @@ class App extends Component {
             onButtonClick={this.onNewItemClick}
             buttonName={this.state.buttonName}
             headerdata={this.state.headerData}
-            itemdata={this.state.itemdata}
+            unpurchasedItems={this.state.unpurchasedItems}
             editHandler={this.editItemHandler}
             deleteHandler={this.deleteItemHandler}
             markPurchased={this.markPurchased}

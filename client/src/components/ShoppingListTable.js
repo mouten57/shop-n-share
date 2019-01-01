@@ -5,7 +5,7 @@ import NotLoggedIn from './NotLoggedIn';
 
 class TableExample extends Component {
   renderTable() {
-    switch (this.props.itemdata) {
+    switch (this.props.unpurchasedItems) {
       case null:
         return;
 
@@ -23,7 +23,7 @@ class TableExample extends Component {
             </Table.Header>
 
             <Table.Body>
-              {this.props.itemdata.map((item, index) => {
+              {this.props.unpurchasedItems.map((item, index) => {
                 return (
                   <Table.Row key={index}>
                     <Table.Cell width={1}>

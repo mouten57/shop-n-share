@@ -198,7 +198,6 @@ describe('routes : items', () => {
         };
         request.post(options, (err, res, body) => {
           Item.findOne({ price: '99.99' }).then(item => {
-            console.log(item);
             expect(err).toBeNull();
             expect(item.price).toBe('99.99');
             done();
