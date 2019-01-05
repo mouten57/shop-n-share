@@ -73,3 +73,13 @@ So, there were a few challenges on this project!
    1. At least one of the bonus options. I really like the idea of different groups and being able to invite people or 'share' your list with only certain users. Even just the authentication to have only certain people being able to access the list would be cool.
    2. I saw some other shopping list apps in my research and one idea that stuck out to me was this little side menu that had various options like 'Share List', 'Check All', 'Uncheck All', 'Remove Completed', 'Print List', and 'Delete List'. So, a little side menu would be cool.
    3. Lastly, I think it would be cool to have a little side chat since everything is live-updating already. Like a place where you can type and say 'hey, I just found these sweet sneakers on sale at Adidas' or somewhere to paste a coupon.
+
+## Socket.io update (1/5/18)
+
+Ok, so this probably took me over the week time limit, but I couldn't stop thinking that maybe the way I had my socket.io was not the most efficient way to do things. I was making a call with axios every 1 second, and that was for every connection on the socket.io server. So I figured if I had even 10 people or more, things would get bottle-necked really fast. PLUS my react app was re-rendering every 1 second! So I kept thinking, 'that's not nearly efficient enough!'.
+
+So I did a little research, and trimmed my socket.io so that when an item gets marked as 'purchased', the client will send a little signal to the server-side socket and the server-side socket sends back the item data (this goes to all connected sockets, making real-time updates possible), but this only happens when the client makes a change. So this trimmed it down to one api call per change (purchased to unpurchased or vice-versa) and one render per change! YES!!
+
+Lastly, I noticed that my list wasn't rendering until the data came back. It was pretty fast, but not React state-update fast. So I changed the 'mark purchased' method a little bit so that locally it updates the state without having to wait on a reply from the socket.io call.
+
+Phew, that was a lot. But I think I seriously improved the scalability of my application and learned a lot along the way. Now I feel satisfied :)
