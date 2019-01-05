@@ -7,12 +7,16 @@ const axios = require('axios');
 const PORT = process.env.PORT || 5000;
 
 const io = require('socket.io')(server);
+const ioConfig = require('./config/io-config');
 
 //main setup
 mainConfig.init(app, express, io, axios);
 
 //route setup
 routeConfig.init(app);
+
+//socket.io setup
+ioConfig.init(io);
 
 //express to behave in production
 if (process.env.NODE_ENV === 'production') {

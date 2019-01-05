@@ -8,9 +8,12 @@ import Modal from './components/ModalExample';
 import EditItemForm from './components/EditItemForm';
 import Header from './components/Header';
 import NameDisplay from './components/NameDisplay';
-import { subscribeToTimer } from './components/socket';
 import axios from 'axios';
 import PurchasedItems from './components/PurchasedItems';
+
+import openSocket from 'socket.io-client';
+const keys = require('./components/socketIOpath');
+const socket = openSocket(keys.socketPath);
 
 const headerData = ['', 'Total', 'Quantity', 'Price', '', ''];
 
@@ -26,21 +29,25 @@ class App extends Component {
       editItem: false,
       editData: null
     };
-    subscribeToTimer((err, itemdata) => {
-      this.setState({
-        itemdata: itemdata.unpurchased,
-        purchasedItems: itemdata.purchased
-      });
+    socket.on('updateItems', async items => {
+      let purchasedItems = await items.purchased;
+      let unpurchasedItems = await items.unpurchased;
+
+      this.setState({ unpurchasedItems, purchasedItems });
     });
   }
   async componentDidMount() {
-    await this.props.fetchUser();
+    this.props.fetchUser();
     const res = await axios.get(`/api/items`);
-    await this.setState({
+    this.setState({
       unpurchasedItems: res.data.unpurchased,
       purchasedItems: res.data.purchased
     });
   }
+
+  socketUpdate = () => {
+    socket.emit('getItems', () => {});
+  };
 
   onSubmitNewItem = async formFields => {
     const res = await axios.post('/api/items/create', formFields);
@@ -51,6 +58,7 @@ class App extends Component {
       newItem: false,
       buttonName: 'New Item'
     });
+    this.socketUpdate();
   };
   updateItem = async newItem => {
     await axios.post(`/api/items/${newItem._id}/update`, newItem);
@@ -61,6 +69,7 @@ class App extends Component {
     );
     unpurchasedItems[index] = newItem;
     this.setState({ editItem: false, unpurchasedItems });
+    this.socketUpdate();
   };
 
   onNewItemClick = e => {
@@ -71,13 +80,49 @@ class App extends Component {
     const res = await axios.get(`/api/items/${id}/edit`);
     this.setState({ editItem: !this.state.editItem, editData: res.data });
   };
-  deleteItemHandler = id => {
-    axios.post(`/api/items/${id}/destroy`);
+  deleteItemHandler = async id => {
+    await axios.post(`/api/items/${id}/destroy`);
     const data = this.state.unpurchasedItems.filter(i => i._id !== id);
     this.setState({ unpurchasedItems: data, editItem: false });
+    this.socketUpdate();
   };
-  markPurchased = async id => {
-    await axios.post(`/api/items/${id}/purchase`);
+  markPurchased = async item => {
+    //state update to make local changes faster than connected sockets
+    switch (item.purchased) {
+      case true:
+        //purchased to unpurchased
+        //cut from purchased
+        const filterPurchased = this.state.purchasedItems.filter(
+          i => i._id !== item._id
+        );
+        //add to unpurchased
+        let data = this.state.unpurchasedItems;
+        let newUnpurchased = [...data, item];
+        //set state for both
+        this.setState({
+          unpurchasedItems: newUnpurchased,
+          purchasedItems: filterPurchased
+        });
+        break;
+      default:
+        //unpurchased to purchased
+        //cut from unpurchased
+        const filterUnpurchased = this.state.unpurchasedItems.filter(
+          i => i._id !== item._id
+        );
+        //add to purchased
+        let data2 = this.state.purchasedItems;
+        let newPurchased = [...data2, item];
+        //set state for both
+        this.setState({
+          unpurchasedItems: filterUnpurchased,
+          purchasedItems: newPurchased
+        });
+
+        break;
+    }
+    await axios.post(`/api/items/${item._id}/purchase`);
+    await this.socketUpdate();
   };
 
   render() {

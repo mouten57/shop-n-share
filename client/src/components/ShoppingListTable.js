@@ -28,7 +28,7 @@ class TableExample extends Component {
                   <Table.Row key={index}>
                     <Table.Cell width={1}>
                       <Checkbox
-                        onChange={e => this.props.markPurchased(item._id)}
+                        onChange={e => this.props.markPurchased(item)}
                         checked={false}
                       />
                     </Table.Cell>

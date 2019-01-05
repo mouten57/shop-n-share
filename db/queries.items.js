@@ -63,7 +63,7 @@ module.exports = {
     const item = await Item.findOne({ _id });
     item.purchased = !item.purchased;
     try {
-      item.save();
+      await item.save();
       callback(null, item);
     } catch (err) {
       callback(err);

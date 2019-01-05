@@ -16,17 +16,8 @@ const keys = require('./keys/keys');
 require('./passport-config');
 
 module.exports = {
-  init(app, express, io, axios) {
+  init(app, express) {
     mongoose.connect(keys.mongoURI);
-    io.on('connection', client => {
-      client.on('subscribeToItems', interval => {
-        console.log('client is subscribing to timer with interval ', interval);
-        setInterval(async () => {
-          let res = await axios.get(keys.ioGetPath);
-          client.emit('items', res.data);
-        }, interval);
-      });
-    });
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(expressValidator());
@@ -45,6 +36,6 @@ module.exports = {
       next();
     });
     app.use(express.static(path.join(__dirname, '..', 'assets')));
-    // app.use(logger('dev'));
+    app.use(logger('dev'));
   }
 };

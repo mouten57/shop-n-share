@@ -20,7 +20,7 @@ class PurchasedItems extends Component {
                       <Table.Cell width={1}>
                         <Checkbox
                           checked
-                          onChange={e => this.props.markPurchased(item._id)}
+                          onChange={e => this.props.markPurchased(item)}
                         />
                       </Table.Cell>
                       <Table.Cell>{item.product}</Table.Cell>
