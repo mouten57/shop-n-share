@@ -1,7 +1,7 @@
-import React from 'react';
-import { Message, Container, Button, Icon } from 'semantic-ui-react';
+import React from "react";
+import { Message, Container, Button, Icon } from "semantic-ui-react";
 
-const Landing = () => {
+const Landing = (props) => {
   return (
     <Container>
       <Message
@@ -10,12 +10,16 @@ const Landing = () => {
         content="Login so you can see the family shopping list!"
       />
 
-      <a href="/auth/google" style={{ color: 'white' }}>
-        <Button color="google plus" fluid>
-          Login with Google
-          <Icon name="google plus" style={{ marginLeft: '5px' }} />
+      <Button.Group fluid>
+        <Button color="green" onClick={props.onSkipLogin}>
+          Skip Login
         </Button>
-      </a>
+        <Button.Or />
+        <Button color="primary" as="a" href="/auth/google">
+          Login with Google
+          <Icon name="google plus" style={{ marginLeft: "5px" }} />
+        </Button>
+      </Button.Group>
     </Container>
   );
 };

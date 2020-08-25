@@ -15,8 +15,8 @@ module.exports = {
  mongoURI:
    'YOUR_MONGO_URI',
  cookieKey: 'ANY RANDOM STRING OF NUMBERS',
- redirectDomain: 'http://localhost:3000',
- ioGetPath: 'http://localhost:5000/api/items'
+ redirectDomain: 'https://localhost:3000',
+ ioGetPath: 'https://localhost:5000/api/items'
 };
 ```
 

@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Header, Menu } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import SignInButton from './SignInButton';
-import NewItemButton from './NewItemButton';
+import React, { Component } from "react";
+import { Header, Menu, Button } from "semantic-ui-react";
+import { connect } from "react-redux";
+import SignInButton from "./SignInButton";
+import NewItemButton from "./NewItemButton";
 
 class Nav extends Component {
   render() {
@@ -13,11 +13,17 @@ class Nav extends Component {
         </Menu.Item>
 
         <Menu.Menu position="right">
-          <Menu.Item fitted>
-            <SignInButton auth={this.props.auth} />
+          <Menu.Item>
+            <Button.Group>
+              <SignInButton
+                onSkipLogin={this.props.onSkipLogin}
+                auth={this.props.auth}
+                fakeAuth={this.props.fakeAuth}
+              />
+            </Button.Group>
           </Menu.Item>
-          {this.props.auth ? (
-            <Menu.Item fitted>
+          {this.props.auth || this.props.fakeAuth ? (
+            <Menu.Item>
               <NewItemButton
                 buttonName={this.props.newItemName}
                 onButtonClick={this.props.onNewItemClick}

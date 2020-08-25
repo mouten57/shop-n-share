@@ -1,9 +1,13 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Table, Checkbox, Button } from 'semantic-ui-react';
-import NotLoggedIn from './NotLoggedIn';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Table, Checkbox, Button } from "semantic-ui-react";
+import NotLoggedIn from "./NotLoggedIn";
 
 class TableExample extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   renderTable() {
     switch (this.props.unpurchasedItems) {
       case null:
@@ -24,12 +28,11 @@ class TableExample extends Component {
 
             <Table.Body>
               {this.props.unpurchasedItems.map((item, index) => {
-              
                 return (
                   <Table.Row key={index}>
                     <Table.Cell width={1}>
                       <Checkbox
-                        onChange={e => this.props.markPurchased(item)}
+                        onChange={(e) => this.props.markPurchased(item)}
                         checked={false}
                       />
                     </Table.Cell>
@@ -42,7 +45,7 @@ class TableExample extends Component {
                         circular
                         icon="edit outline"
                         floated="right"
-                        onClick={e => this.props.editHandler(item._id)}
+                        onClick={(e) => this.props.editHandler(item._id)}
                       />
                     </Table.Cell>
                     <Table.Cell width={1}>
@@ -52,7 +55,7 @@ class TableExample extends Component {
                         icon="delete"
                         floated="left"
                         value={index}
-                        onClick={e => this.props.deleteHandler(item._id)}
+                        onClick={(e) => this.props.deleteHandler(item._id)}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -64,7 +67,17 @@ class TableExample extends Component {
     }
   }
   render() {
-    return <div>{this.props.auth ? this.renderTable() : <NotLoggedIn />}</div>;
+    return (
+      <div>
+        {this.props.auth ? (
+          this.renderTable()
+        ) : this.props.fakeAuth ? (
+          this.renderTable()
+        ) : (
+          <NotLoggedIn onSkipLogin={this.props.onSkipLogin} />
+        )}
+      </div>
+    );
   }
 }
 

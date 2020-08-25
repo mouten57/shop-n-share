@@ -1,13 +1,13 @@
 //Integration testing is a type of testing to
 //check if different pieces of the modules are working together.
-const request = require('request');
-const base = 'http://localhost:5000/';
-require('../../db/models/User');
-var mongoose = require('mongoose');
-const User = mongoose.model('users');
+const request = require("request");
+const base = "https://localhost:5000/";
+require("../../db/models/User");
+var mongoose = require("mongoose");
+const User = mongoose.model("users");
 
-describe('routes : auth', () => {
-  afterAll(async done => {
+describe("routes : auth", () => {
+  afterAll(async (done) => {
     // await Item.deleteMany({ product: 'JasmineTest' });
     await User.deleteMany({ googleId: 0 });
     try {
@@ -16,11 +16,11 @@ describe('routes : auth', () => {
       console.log(err);
     }
   });
-  describe('GET /auth/google', () => {
-    it('should take user to google sign in screen', async done => {
+  describe("GET /auth/google", () => {
+    it("should take user to google sign in screen", async (done) => {
       await request.get(`${base}auth/google`, (err, res, body) => {
         try {
-          expect(body).toContain('Sign in - Google Accounts');
+          expect(body).toContain("Sign in - Google Accounts");
           done();
         } catch (err) {
           console.log(err);
@@ -28,13 +28,13 @@ describe('routes : auth', () => {
       });
     });
   });
-  describe('GET /api/current_user', () => {
-    it('should send empty response of current user info IF USER IS NOT LOGGED IN', async done => {
+  describe("GET /api/current_user", () => {
+    it("should send empty response of current user info IF USER IS NOT LOGGED IN", async (done) => {
       request.get(
         {
           // mock authentication
-          url: 'http://localhost:5000/auth/fake',
-          form: {}
+          url: "https://localhost:5000/auth/fake",
+          form: {},
         },
         (err, res, body) => {
           done();
