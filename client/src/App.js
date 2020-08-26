@@ -39,15 +39,14 @@ class App extends Component {
   }
   async componentDidMount() {
     this.props.fetchUser();
-    const fakeAuth = localStorage.getItem("fakeAuth");
-
+    var fakeAuth = localStorage.getItem("fakeAuth");
+    fakeAuth = fakeAuth === "true";
     const res = await axios.get(`/api/items`);
     this.setState({
       unpurchasedItems: res.data.unpurchased,
       purchasedItems: res.data.purchased,
       fakeAuth,
     });
-    console.log(this.state);
   }
 
   socketUpdate = () => {
@@ -131,8 +130,12 @@ class App extends Component {
     await this.socketUpdate();
   };
   onSkipLogin = () => {
-    this.setState({ fakeAuth: !this.state.fakeAuth });
+    this.setState({ fakeAuth: true });
     localStorage.setItem("fakeAuth", true);
+  };
+  onFakeAuthLogout = () => {
+    this.setState({ fakeAuth: false });
+    localStorage.setItem("fakeAuth", false);
   };
 
   render() {
@@ -140,6 +143,7 @@ class App extends Component {
       <Container style={{ marginTop: "10px" }}>
         <NameDisplay />
         <Header
+          onFakeAuthLogout={this.onFakeAuthLogout}
           fakeAuth={this.state.fakeAuth}
           onNewItemClick={this.onNewItemClick}
           newItemName={this.state.buttonName}

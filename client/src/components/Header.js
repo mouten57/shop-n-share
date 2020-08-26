@@ -16,6 +16,7 @@ class Nav extends Component {
           <Menu.Item>
             <Button.Group>
               <SignInButton
+                onFakeAuthLogout={this.props.onFakeAuthLogout}
                 onSkipLogin={this.props.onSkipLogin}
                 auth={this.props.auth}
                 fakeAuth={this.props.fakeAuth}

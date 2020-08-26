@@ -21,7 +21,7 @@ class SignInButton extends Component {
       default:
         if (this.props.fakeAuth) {
           var link = "#";
-          var clickAction = this.props.onSkipLogin;
+          var clickAction = this.props.onFakeAuthLogout;
         } else {
           var link = "/api/logout";
         }
