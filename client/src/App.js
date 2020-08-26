@@ -47,6 +47,7 @@ class App extends Component {
       purchasedItems: res.data.purchased,
       fakeAuth,
     });
+    console.log(this.state);
   }
 
   socketUpdate = () => {
@@ -179,6 +180,7 @@ class App extends Component {
             markPurchased={this.markPurchased}
           />
           <PurchasedItems
+            fakeAuth={this.state.fakeAuth}
             purchasedItems={this.state.purchasedItems}
             markPurchased={this.markPurchased}
           />
@@ -187,7 +189,4 @@ class App extends Component {
     );
   }
 }
-export default connect(
-  null,
-  actions
-)(App);
+export default connect(null, actions)(App);

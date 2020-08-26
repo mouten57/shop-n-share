@@ -7,6 +7,6 @@ if (process.env.NODE_ENV === "production") {
   //we are in development - return the dev keys!!
   //immediately adds dev file to exports
   module.exports = {
-    socketPath: "https://localhost:5000",
+    socketPath: "http://localhost:5000",
   };
 }

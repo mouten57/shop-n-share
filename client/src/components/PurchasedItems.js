@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Table, Checkbox } from 'semantic-ui-react';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { Table, Checkbox } from "semantic-ui-react";
+import { connect } from "react-redux";
 
 class PurchasedItems extends Component {
   renderTable() {
@@ -11,17 +11,17 @@ class PurchasedItems extends Component {
       default:
         return (
           <div>
-            <h2 style={{ marginTop: '10px' }}>Purchased Items</h2>
+            <h2 style={{ marginTop: "10px" }}>Purchased Items</h2>
             <Table singleLine unstackable>
               <Table.Body>
                 {this.props.purchasedItems.map((item, index) => {
-                  console.log(item)
+                  console.log(item);
                   return (
                     <Table.Row key={index}>
                       <Table.Cell width={1}>
                         <Checkbox
                           checked
-                          onChange={e => this.props.markPurchased(item)}
+                          onChange={(e) => this.props.markPurchased(item)}
                         />
                       </Table.Cell>
                       <Table.Cell>{item.product}</Table.Cell>
@@ -41,7 +41,15 @@ class PurchasedItems extends Component {
     }
   }
   render() {
-    return <div>{this.props.auth ? this.renderTable() : null}</div>;
+    return (
+      <div>
+        {this.props.auth
+          ? this.renderTable()
+          : this.props.fakeAuth
+          ? this.renderTable()
+          : null}
+      </div>
+    );
   }
 }
 function mapStateToProps({ auth }) {
